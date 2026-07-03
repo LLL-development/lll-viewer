@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4f46e5">
+<title>HTML Viewer</title>
+<style>
+  :root {
+    --bg: #f4f5f8;
+    --surface: #ffffff;
+    --ink: #191b22;
+    --muted: #6b7280;
+    --border: #d9dce4;
+    --accent: #4f46e5;
+    --accent-tint: #eef0fb;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Upload screen ---------- */
+  .uploader {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    gap: 28px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-badge {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-tint);
+    padding: 4px 8px;
+    border-radius: 6px;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .dropzone {
+    width: 100%;
+    max-width: 440px;
+    background: var(--surface);
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    padding: 40px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+
+  .dropzone:hover { border-color: var(--accent); }
+  .dropzone:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .dropzone.dragging {
+    border-color: var(--accent);
+    background: var(--accent-tint);
+  }
+
+  .dz-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 18px;
+    border-radius: 12px;
+    background: var(--accent-tint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+
+  .dz-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .dz-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 22px;
+  }
+
+  .btn {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 22px;
+    min-height: 46px;
+    cursor: pointer;
+    transition: filter .15s ease;
+  }
+  .btn:hover { filter: brightness(1.07); }
+  .btn:active { filter: brightness(0.95); }
+
+  .privacy {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 440px;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .privacy code {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+  }
+
+  .error {
+    color: #b42318;
+    background: #fef3f2;
+    border: 1px solid #fda29b;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    max-width: 440px;
+    text-align: center;
+  }
+
+  /* ---------- Viewer screen ---------- */
+  .viewer {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .tool-btn {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 8px 12px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tool-btn:hover { background: var(--bg); }
+  .tool-btn:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .filename {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .frame {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: #fff;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Upload screen -->
+  <main class="uploader" id="uploader">
+    <div class="brand">
+      <span class="brand-badge">&lt;/&gt;</span>
+      <span class="brand-name">HTML Viewer</span>
+    </div>
+
+    <div class="dropzone" id="dropzone" role="button" tabindex="0"
+         aria-label="Choose an HTML file to open">
+      <div class="dz-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6"/>
+          <path d="M12 18v-6"/>
+          <path d="M9 15l3 3 3-3"/>
+        </svg>
+      </div>
+      <p class="dz-title">Open an HTML file</p>
+      <p class="dz-sub">Tap to choose a file from your device</p>
+      <button class="btn" type="button" id="chooseBtn">Choose file</button>
+    </div>
+
+    <p class="error hidden" id="error"></p>
+
+    <p class="privacy">
+      Your file stays on your device. Nothing is uploaded to a server.
+      Works with <code>.html</code> and <code>.htm</code> files.
+    </p>
+
+    <input type="file" id="fileInput" accept=".html,.htm,text/html" hidden>
+  </main>
+
+  <!-- Viewer screen -->
+  <div class="viewer hidden" id="viewer">
+    <div class="toolbar">
+      <button class="tool-btn" type="button" id="backBtn" aria-label="Back to upload">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+        </svg>
+        Back
+      </button>
+      <span class="filename" id="filename"></span>
+      <button class="tool-btn" type="button" id="newTabBtn" aria-label="Open in a new tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <path d="M15 3h6v6"/><path d="M10 14L21 3"/>
+        </svg>
+        New tab
+      </button>
+    </div>
+    <iframe class="frame" id="frame" title="Rendered HTML"></iframe>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var fileInput = document.getElementById("fileInput");
+      var dropzone  = document.getElementById("dropzone");
+      var chooseBtn = document.getElementById("chooseBtn");
+      var uploader  = document.getElementById("uploader");
+      var viewer    = document.getElementById("viewer");
+      var frame     = document.getElementById("frame");
+      var filename  = document.getElementById("filename");
+      var backBtn   = document.getElementById("backBtn");
+      var newTabBtn = document.getElementById("newTabBtn");
+      var errorEl   = document.getElementById("error");
+
+      var currentUrl = null;
+
+      function isHtml(file) {
+        var name = (file.name || "").toLowerCase();
+        return name.endsWith(".html") || name.endsWith(".htm") ||
+               file.type === "text/html";
+      }
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.classList.remove("hidden");
+      }
+
+      function clearError() {
+        errorEl.classList.add("hidden");
+      }
+
+      function openFile(file) {
+        if (!file) return;
+        if (!isHtml(file)) {
+          showError("That doesn't look like an HTML file. Please pick a .html or .htm file.");
+          return;
+        }
+        clearError();
+
+        // Release the previous file's URL so we don't leak memory.
+        if (currentUrl) URL.revokeObjectURL(currentUrl);
+        currentUrl = URL.createObjectURL(file);
+
+        frame.src = currentUrl;
+        filename.textContent = file.name;
+
+        uploader.classList.add("hidden");
+        viewer.classList.remove("hidden");
+      }
+
+      function closeViewer() {
+        viewer.classList.add("hidden");
+        uploader.classList.remove("hidden");
+        frame.src = "about:blank";
+        if (currentUrl) {
+          URL.revokeObjectURL(currentUrl);
+          currentUrl = null;
+        }
+        fileInput.value = ""; // let the same file be picked again
+      }
+
+      // --- Pick a file ---
+      function pick() { fileInput.click(); }
+
+      chooseBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        pick();
+      });
+      dropzone.addEventListener("click", pick);
+      dropzone.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          pick();
+        }
+      });
+
+      fileInput.addEventListener("change", function (e) {
+        openFile(e.target.files[0]);
+      });
+
+      // --- Drag & drop (desktop) ---
+      ["dragenter", "dragover"].forEach(function (evt) {
+        dropzone.addEventListener(evt, function (e) {
+          e.preventDefault();
+          dropzone.classList.add("dragging");
+        });
+      });
+      ["dragleave", "drop"].forEach(function (evt) {
+        dropzone.addEventListener(evt, function (e) {
+          e.preventDefault();
+          dropzone.classList.remove("dragging");
+        });
+      });
+      dropzone.addEventListener("drop", function (e) {
+        var files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length) openFile(files[0]);
+      });
+
+      // --- Viewer controls ---
+      backBtn.addEventListener("click", closeViewer);
+      newTabBtn.addEventListener("click", function () {
+        if (currentUrl) window.open(currentUrl, "_blank");
+      });
+    })();
+  </script>
+</body>
+</html>
