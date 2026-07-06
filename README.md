@@ -1,27 +1,51 @@
-# LLL HTML Viewer
+# LLL Tools
 
-A single-page web app for opening `.html` files directly in a phone browser — no need to download the file and hunt for an app that can render it.
+A small suite of mobile-friendly, client-side file tools. Pick a file, view it on your
+phone — nothing is uploaded to a server.
 
-**Live:** https://lll-development.github.io/lll-html-viewer/
+**Live:** https://lll-tools.pages.dev/
 
-## How to use
+## Tools
 
-1. Open the link on your phone (or desktop).
-2. Tap **Choose file** and pick a `.html` or `.htm` file.
-3. It renders right away.
+| Path    | Tool            | Opens              |
+|---------|-----------------|--------------------|
+| `/html` | HTML Viewer     | `.html`, `.htm`    |
+| `/md`   | Markdown Viewer | `.md`, `.markdown` |
+| `/pdf`  | *(planned)*     | `.pdf`             |
+| `/csv`  | *(planned)*     | `.csv`             |
 
-Use **New tab** in the viewer if a page doesn't display correctly inside the frame.
+## Structure
 
-## How it works
+```
+lll-tools/
+├── index.html          landing page (links to each tool)
+├── shared/             shared across all tools — edit once, applies everywhere
+│   ├── brand.css       palette, logo, common UI styles
+│   ├── i18n.js         language list + common translations + switcher engine
+│   ├── logo.svg
+│   ├── favicon.svg
+│   └── vendor/         local copies of third-party libs (offline-capable)
+│       ├── marked.min.js
+│       └── purify.min.js
+├── html/index.html     HTML Viewer
+└── md/index.html       Markdown Viewer
+```
 
-- The selected file is turned into a temporary blob URL and loaded into an `<iframe>`.
-- Everything runs client-side. **Nothing is uploaded to a server** — the file never leaves the device.
-- No libraries, no build step, no external fonts. Works offline once the page has loaded.
+## Adding a new tool
 
-## Files
+1. Create a folder (e.g. `csv/`) with an `index.html`.
+2. Link `../shared/brand.css` and `../shared/i18n.js`.
+3. Provide only the tool-specific strings to `LLL_I18N.init(...)`; common strings
+   (Back, New tab, Choose file, language names) come from `shared/i18n.js`.
+4. Add a card to the landing page.
 
-- `index.html` — the entire app (markup, styles, and script in one file).
+## Languages
+
+Japanese (default), English, Simplified Chinese, Traditional Chinese, Korean, Malay.
+The chosen language is shared across all tools and remembered across visits.
 
 ## Notes
 
-- The viewer runs opened files with their scripts and styles intact, so they render faithfully. It's intended for trusted, inhouse files.
+- The Markdown viewer sanitizes rendered output (DOMPurify) so untrusted `.md` files
+  can't run scripts.
+- All third-party libraries are vendored locally under `shared/vendor/` — no CDN calls.

@@ -4,515 +4,129 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#222220">
-<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+CjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjE4IiBmaWxsPSIjZmZmZmZmIi8+CjxnIGZpbGw9IiMyMjIyMjAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwLDkpIj4KPHBhdGggZD0iTTI3LjY1OTcgNzUuODA5MUgwVjM5LjkyMTlIMTAuMDAyMVY2NS44MDNIMjcuNjU5N1Y3NS44MDkxWiIvPgo8cGF0aCBkPSJNNzMuNTA0OCA3NS44MDkySDM3LjYzMjNWNjUuODAzSDYzLjQ4ODFWNDguMTM4Mkg3My41MDQ4Vjc1LjgwOTJaIi8+CjxwYXRoIGQ9Ik0xMC4wMDIxIDI5Ljk0NUgwVjIuMjczOTNIMzUuODcyNVYxMi4yOTQ4SDEwLjAwMjFWMjkuOTQ1WiIvPgo8cGF0aCBkPSJNNTkuNDQwNCA0MC45NjM1QzU2LjgwMDYgNDAuOTYzNSA1NC4xOTAxIDQwLjYxMTQgNTEuNjIzNiAzOS45MDcxQzQ5LjA1NzEgMzkuMjAyOSA0Ni44NDI1IDM4LjE3NTkgNDQuOTk0NiAzNi44NDA3TDQ4LjQxMTggMzAuMTY1QzQ5Ljg2MzcgMzEuMjIxNCA1MS41MzU2IDMyLjA1NzcgNTMuNDI3NSAzMi42ODg2QzU1LjMzNCAzMy4zMTk1IDU3LjI2OTkgMzMuNjQyMyA1OS4yNjQ0IDMzLjY0MjNDNjEuNDc5IDMzLjY0MjMgNjMuMjA5NSAzMy4yMDIxIDY0LjQ3MDggMzIuMzA3MUM2NS43MzIgMzEuNDI2OCA2Ni4zNzczIDMwLjIwOTEgNjYuMzc3MyAyOC42OTc5QzY2LjM3NzMgMjcuMjQ1NCA2NS44MiAyNi4xMTU2IDY0LjY5MDggMjUuMjc5M0M2My41NjE1IDI0LjQ0MyA2MS43NTc2IDI0LjAzMjIgNTkuMjY0NCAyNC4wMzIySDU1LjMwNDdWMTguMjY2Mkw2NS44MzQ3IDYuMjA1OTdMNjYuODE3MyA5LjM2MDQxSDQ2LjkwMTJWMi4yNzM5M0g3My41MDQ5VjcuOTgxMjZMNjIuOTc0OSAxOS45ODI4TDU4LjUxNjUgMTcuNDI5OUg2MS4wNjgzQzY1LjczMiAxNy40Mjk5IDY5LjI4MTIgMTguNDg2MyA3MS42ODYzIDIwLjU4NDRDNzQuMDkxNSAyMi42ODI0IDc1LjI5NDEgMjUuMzY3NCA3NS4yOTQxIDI4LjYyNDVDNzUuMjk0MSAzMC43OTU5IDc0LjcyMjIgMzIuODIwNiA3My41NzgyIDM0LjcxMzNDNzIuNDM0MyAzNi41OTEzIDcwLjcwMzcgMzguMTAyNSA2OC4zODY1IDM5LjI0NjlDNjYuMDg0IDQwLjM5MTMgNjMuMTA2OSA0MC45NjM1IDU5LjQ0MDQgNDAuOTYzNVoiLz4KPC9nPgo8L3N2Zz4K">
-<title>HTML Viewer</title>
+<link rel="icon" href="shared/favicon.svg">
+<link rel="stylesheet" href="shared/brand.css">
+<title>LLL Tools</title>
 <style>
-  :root {
-    --bg: #f3f3f2;
-    --surface: #ffffff;
-    --ink: #222220;
-    --muted: #6f6f6a;
-    --border: #e3e3e0;
-    --accent: #222220;
-    --accent-tint: #ececea;
-    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-            "Hiragino Sans", "Noto Sans CJK JP", "Noto Sans KR", "Microsoft YaHei", sans-serif;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body { height: 100%; margin: 0; }
-
-  body {
-    font-family: var(--sans);
-    color: var(--ink);
-    background: var(--bg);
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ---------- Upload screen ---------- */
-  .uploader {
+  .page {
     position: relative;
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     padding: 24px;
-    gap: 28px;
+    padding-top: max(72px, calc(env(safe-area-inset-top) + 56px));
   }
+  .hero { text-align: center; margin-bottom: 36px; }
+  .hero-logo img { height: 46px; width: auto; display: inline-block; }
+  .hero-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 18px 0 6px; }
+  .hero-sub { font-size: 15px; color: var(--muted); margin: 0; }
 
-  /* Language switcher */
-  .lang-switch {
-    position: absolute;
-    top: max(16px, env(safe-area-inset-top));
-    right: 16px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 6px 8px 6px 10px;
-  }
-  .lang-switch svg { color: var(--muted); flex: none; }
-  .lang-switch select {
-    border: none;
-    background: transparent;
-    font-family: var(--sans);
-    font-size: 14px;
-    color: var(--ink);
-    cursor: pointer;
-  }
-  .lang-switch:focus-within {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  /* Brand */
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .brand-name {
-    padding-left: 12px;
-    border-left: 1px solid var(--border);
-  }
-  .brand-logo { flex: none; line-height: 0; }
-  .brand-name {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  .dropzone {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
     width: 100%;
-    max-width: 440px;
-    background: var(--surface);
-    border: 2px dashed var(--border);
-    border-radius: 16px;
-    padding: 40px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color .15s ease, background .15s ease;
+    max-width: 460px;
   }
-  .dropzone:hover { border-color: var(--accent); }
-  .dropzone:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-  .dropzone.dragging { border-color: var(--accent); background: var(--accent-tint); }
 
-  .dz-icon {
-    width: 52px;
-    height: 52px;
-    margin: 0 auto 18px;
-    border-radius: 12px;
-    background: var(--accent-tint);
+  .card {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: var(--accent);
-  }
-  .dz-title { font-size: 17px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
-  .dz-sub { font-size: 14px; color: var(--muted); margin: 0 0 22px; }
-
-  .btn {
-    font-family: var(--sans);
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    background: var(--accent);
-    border: none;
-    border-radius: 10px;
-    padding: 12px 22px;
-    min-height: 46px;
-    cursor: pointer;
-    transition: filter .15s ease;
-  }
-  .btn:hover { filter: brightness(1.07); }
-  .btn:active { filter: brightness(0.95); }
-
-  .privacy {
-    font-size: 13px;
-    color: var(--muted);
-    max-width: 440px;
-    text-align: center;
-    line-height: 1.6;
-  }
-
-  .error {
-    color: #b42318;
-    background: #fef3f2;
-    border: 1px solid #fda29b;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 13px;
-    max-width: 440px;
-    text-align: center;
-  }
-
-  /* ---------- Viewer screen ---------- */
-  .viewer {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
+    gap: 14px;
     background: var(--surface);
-  }
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    padding-top: max(10px, env(safe-area-inset-top));
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
-  .tool-btn {
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    background: transparent;
     border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 8px 12px;
-    min-height: 40px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    white-space: nowrap;
+    border-radius: 14px;
+    padding: 18px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color .15s ease, transform .1s ease;
   }
-  .tool-btn:hover { background: var(--bg); }
-  .tool-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  a.card:hover { border-color: var(--accent); }
+  a.card:active { transform: scale(0.99); }
+  a.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
-  .filename {
-    flex: 1;
-    min-width: 0;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center;
+  .card.soon { opacity: 0.6; cursor: default; }
+
+  .card-icon {
+    flex: none;
+    width: 44px; height: 44px;
+    border-radius: 11px;
+    background: var(--accent-tint);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-weight: 700; font-size: 13px;
   }
-  .frame { flex: 1; width: 100%; border: none; background: #fff; }
-
-  .hidden { display: none !important; }
-
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  .card-text { min-width: 0; }
+  .card-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .card-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .badge {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 2px 8px; margin-left: auto; flex: none;
+  }
 </style>
 </head>
 <body>
+  <div class="page">
+    <div id="langSlot" data-fixed="true"></div>
 
-  <!-- Upload screen -->
-  <main class="uploader" id="uploader">
-
-    <!-- Language switcher -->
-    <div class="lang-switch">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M2 12h20"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
-      <select id="langSelect" data-i18n-aria="langAria" aria-label="Language">
-        <option value="ja">日本語</option>
-        <option value="en">English</option>
-        <option value="zh-Hans">简体中文</option>
-        <option value="zh-Hant">繁體中文</option>
-        <option value="ko">한국어</option>
-        <option value="ms">Bahasa Melayu</option>
-      </select>
+    <div class="hero">
+      <div class="hero-logo"><img src="shared/logo.svg" alt="Live Laugh Love"></div>
+      <h1 class="hero-title" data-i18n="heroTitle">LLL Tools</h1>
+      <p class="hero-sub" data-i18n="heroSub">Handy file tools for your phone</p>
     </div>
 
-    <!-- Brand -->
-    <div class="brand">
-      <span class="brand-logo" role="img" aria-label="Live Laugh Love">
-        <svg width="82" height="36" viewBox="0 0 173 76" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<g clip-path="url(#clip0_14_176)">
-<path d="M91.2798 20.6137V2.27393H95.5475V17.1658H104.684V20.6284H91.2798V20.6137Z" fill="#222220"/>
-<path d="M109.583 4.56293C108.82 4.56293 108.189 4.34286 107.72 3.9027C107.251 3.46255 107.016 2.91969 107.016 2.27413C107.016 1.62857 107.251 1.08571 107.72 0.64556C108.189 0.205405 108.82 0 109.583 0C110.331 0 110.947 0.205405 111.431 0.616216C111.914 1.02703 112.149 1.55521 112.149 2.20077C112.149 2.87568 111.914 3.44788 111.445 3.88803C110.976 4.32819 110.345 4.56293 109.583 4.56293ZM107.544 20.6139V6.52896H111.636V20.6286H107.544V20.6139Z" fill="#222220"/>
-<path d="M120.01 20.6138L114.1 6.52881H118.294L123.222 18.6624H121.125L126.258 6.52881H130.159L124.219 20.6284H120.01V20.6138Z" fill="#222220"/>
-<path d="M138.812 20.8195C137.198 20.8195 135.805 20.5114 134.603 19.8805C133.4 19.2496 132.461 18.3986 131.801 17.2982C131.141 16.2125 130.804 14.9654 130.804 13.5716C130.804 12.1778 131.127 10.9307 131.757 9.83029C132.388 8.72991 133.283 7.86427 134.427 7.24806C135.57 6.63184 136.861 6.32373 138.284 6.32373C139.662 6.32373 140.909 6.61717 142.009 7.21871C143.123 7.80558 143.989 8.65655 144.634 9.72759C145.279 10.8133 145.602 12.1044 145.602 13.6303C145.602 13.7917 145.587 13.9677 145.573 14.1732C145.558 14.3786 145.543 14.5546 145.514 14.7307H134.075V12.3392H143.373L141.774 13.0434C141.789 12.3098 141.657 11.6789 141.349 11.1361C141.055 10.5932 140.645 10.1677 140.117 9.85964C139.589 9.55153 138.988 9.40481 138.284 9.40481C137.58 9.40481 136.964 9.55153 136.436 9.85964C135.908 10.1677 135.482 10.5932 135.189 11.1361C134.896 11.6789 134.749 12.3392 134.749 13.0874V13.7183C134.749 14.5106 134.925 15.1855 135.277 15.7577C135.629 16.3299 136.113 16.7701 136.714 17.0782C137.33 17.3863 138.064 17.533 138.914 17.533C139.648 17.533 140.293 17.4156 140.865 17.1955C141.437 16.9755 141.95 16.6233 142.419 16.1685L144.59 18.5307C143.945 19.2643 143.138 19.8218 142.155 20.2179C141.217 20.6287 140.088 20.8195 138.812 20.8195Z" fill="#222220"/>
-<path d="M91.2798 48.1967V29.8569H95.5475V44.7488H104.684V48.2114H91.2798V48.1967Z" fill="#222220"/>
-<path d="M111.709 48.4172C110.624 48.4172 109.7 48.2264 108.908 47.8597C108.116 47.4782 107.515 46.9793 107.09 46.3338C106.664 45.6882 106.444 44.9693 106.444 44.1624C106.444 43.3407 106.65 42.6071 107.06 41.9763C107.471 41.3454 108.116 40.8465 109.011 40.4944C109.905 40.1423 111.064 39.9662 112.516 39.9662H116.241V42.3284H112.941C111.988 42.3284 111.328 42.4898 110.961 42.7979C110.609 43.106 110.419 43.5021 110.419 43.9716C110.419 44.4998 110.624 44.9106 111.035 45.2187C111.445 45.5268 112.003 45.6736 112.692 45.6736C113.396 45.6736 114.012 45.5122 114.569 45.2041C115.112 44.8959 115.508 44.4118 115.728 43.7662L116.358 45.6736C116.065 46.5539 115.522 47.2288 114.73 47.6983C113.953 48.1678 112.941 48.4172 111.709 48.4172ZM115.992 48.1971V45.4535L115.728 44.8519V39.9222C115.728 39.0419 115.464 38.367 114.936 37.8828C114.408 37.3987 113.586 37.1492 112.487 37.1492C111.739 37.1492 111.005 37.2666 110.272 37.5014C109.553 37.7361 108.923 38.0589 108.395 38.455L106.958 35.594C107.72 35.0365 108.644 34.611 109.729 34.3176C110.815 34.0241 111.915 33.8921 113.029 33.8921C115.17 33.8921 116.842 34.4056 118.03 35.418C119.218 36.4303 119.805 38.0149 119.805 40.157V48.1971H115.992Z" fill="#222220"/>
-<path d="M128.941 48.4169C127.754 48.4169 126.712 48.1968 125.803 47.742C124.894 47.2871 124.19 46.5829 123.676 45.6439C123.163 44.7049 122.914 43.5165 122.914 42.0786V34.1118H127.006V41.4477C127.006 42.6362 127.255 43.5018 127.754 44.0593C128.252 44.6169 128.956 44.881 129.865 44.881C130.496 44.881 131.053 44.7342 131.537 44.4555C132.021 44.1767 132.417 43.7512 132.696 43.1937C132.989 42.6362 133.121 41.9319 133.121 41.0956V34.0972H137.184V48.1968H133.312V44.2941L134.016 45.4532C133.532 46.4362 132.828 47.1698 131.919 47.6686C131.009 48.1674 130.012 48.4169 128.941 48.4169Z" fill="#222220"/>
-<path d="M146.423 47.5222C145.147 47.5222 143.974 47.2434 142.918 46.6712C141.847 46.099 141.011 45.3067 140.381 44.2944C139.75 43.2674 139.442 42.0789 139.442 40.7145C139.442 39.3353 139.75 38.1322 140.381 37.1199C141.011 36.0928 141.862 35.3152 142.918 34.743C143.989 34.1855 145.147 33.9067 146.423 33.9067C147.64 33.9067 148.711 34.1415 149.606 34.6257C150.5 35.1098 151.204 35.8581 151.717 36.8704C152.231 37.8828 152.48 39.1739 152.48 40.7145C152.48 42.2697 152.231 43.5461 151.717 44.5585C151.204 45.5562 150.515 46.3044 149.606 46.8033C148.711 47.2728 147.655 47.5222 146.423 47.5222ZM147.083 53.4936C145.763 53.4936 144.472 53.3322 143.241 53.0094C142.009 52.6867 140.982 52.2025 140.161 51.5569L141.789 48.5932C142.405 49.1067 143.153 49.5029 144.047 49.7816C144.942 50.0751 145.851 50.2071 146.79 50.2071C148.227 50.2071 149.268 49.8843 149.928 49.2388C150.588 48.5932 150.925 47.6249 150.925 46.3631V44.265L151.189 40.6998L151.116 37.1052V34.0975H154.988V45.8349C154.988 48.4318 154.313 50.3685 152.949 51.6156C151.585 52.8774 149.635 53.4936 147.083 53.4936ZM147.259 44.1917C147.978 44.1917 148.608 44.045 149.166 43.7515C149.723 43.4581 150.163 43.0473 150.471 42.5191C150.779 41.9909 150.94 41.3894 150.94 40.7145C150.94 40.0102 150.779 39.4087 150.471 38.8952C150.163 38.3816 149.723 37.9855 149.166 37.7067C148.608 37.428 147.963 37.2813 147.259 37.2813C146.555 37.2813 145.924 37.428 145.367 37.7067C144.795 37.9855 144.355 38.3816 144.033 38.8952C143.71 39.4087 143.549 40.0249 143.549 40.7145C143.549 41.3894 143.71 42.0056 144.033 42.5191C144.355 43.0473 144.795 43.4581 145.367 43.7515C145.939 44.045 146.57 44.1917 147.259 44.1917Z" fill="#222220"/>
-<path d="M166.823 33.9066C167.938 33.9066 168.935 34.1267 169.815 34.5815C170.695 35.0217 171.384 35.7113 171.897 36.6209C172.411 37.5306 172.66 38.719 172.66 40.1421V48.2116H168.568V40.773C168.568 39.6433 168.319 38.807 167.82 38.2641C167.322 37.7213 166.618 37.4572 165.709 37.4572C165.063 37.4572 164.477 37.6039 163.963 37.8827C163.45 38.1614 163.054 38.5723 162.761 39.1151C162.467 39.658 162.335 40.3769 162.335 41.2572V48.2263H158.244V28.7715H162.335V38.0147L161.426 36.841C161.925 35.902 162.658 35.1684 163.597 34.6696C164.55 34.156 165.621 33.9066 166.823 33.9066Z" fill="#222220"/>
-<path d="M91.2798 75.7944V57.4546H95.5475V72.3318H104.684V75.7944H91.2798Z" fill="#222220"/>
-<path d="M113.484 76.0001C112.002 76.0001 110.683 75.692 109.509 75.0612C108.351 74.4303 107.441 73.5793 106.767 72.4789C106.107 71.3932 105.77 70.1461 105.77 68.7523C105.77 67.3438 106.107 66.082 106.767 64.9963C107.427 63.9106 108.336 63.0449 109.509 62.4287C110.668 61.8125 111.988 61.5044 113.484 61.5044C114.98 61.5044 116.314 61.8125 117.487 62.4287C118.661 63.0449 119.57 63.9106 120.23 64.9963C120.89 66.082 121.227 67.3438 121.227 68.7523C121.227 70.1608 120.89 71.4225 120.23 72.4936C119.57 73.5793 118.646 74.4303 117.487 75.0612C116.314 75.692 114.98 76.0001 113.484 76.0001ZM113.484 72.6403C114.188 72.6403 114.804 72.4936 115.332 72.1855C115.86 71.8774 116.285 71.4372 116.608 70.8357C116.93 70.2488 117.092 69.5445 117.092 68.7376C117.092 67.916 116.93 67.2117 116.608 66.6395C116.285 66.0673 115.86 65.6272 115.332 65.3191C114.804 65.011 114.188 64.8642 113.513 64.8642C112.838 64.8642 112.222 65.011 111.68 65.3191C111.137 65.6272 110.712 66.0673 110.389 66.6395C110.067 67.2117 109.905 67.916 109.905 68.7376C109.905 69.5445 110.067 70.2341 110.389 70.8357C110.712 71.4225 111.137 71.8774 111.68 72.1855C112.208 72.4936 112.809 72.6403 113.484 72.6403Z" fill="#222220"/>
-<path d="M127.798 75.7944L121.873 61.6948H126.067L130.995 73.8284H128.897L134.03 61.6948H137.932L131.992 75.7944H127.798Z" fill="#222220"/>
-<path d="M146.599 76.0001C144.986 76.0001 143.593 75.692 142.39 75.0612C141.187 74.4303 140.249 73.5793 139.589 72.4789C138.929 71.3932 138.592 70.1461 138.592 68.7523C138.592 67.3585 138.914 66.1113 139.545 65.011C140.175 63.9106 141.07 63.0449 142.214 62.4287C143.358 61.8125 144.649 61.5044 146.071 61.5044C147.45 61.5044 148.696 61.7978 149.796 62.3994C150.911 62.9862 151.776 63.8372 152.421 64.9083C153.067 65.994 153.389 67.2851 153.389 68.811C153.389 68.9724 153.375 69.1484 153.36 69.3538C153.345 69.5592 153.331 69.7353 153.301 69.9114H141.862V67.5345H151.16L149.591 68.2241C149.606 67.4905 149.474 66.8596 149.166 66.3168C148.872 65.7739 148.462 65.3484 147.934 65.0403C147.406 64.7322 146.804 64.5855 146.1 64.5855C145.396 64.5855 144.781 64.7322 144.253 65.0403C143.725 65.3484 143.299 65.7739 143.006 66.3168C142.713 66.8596 142.566 67.5198 142.566 68.2681V68.899C142.566 69.6913 142.742 70.3662 143.094 70.9384C143.446 71.5106 143.93 71.9507 144.531 72.2588C145.147 72.5669 145.88 72.7137 146.731 72.7137C147.464 72.7137 148.11 72.5963 148.682 72.3762C149.254 72.1561 149.767 71.804 150.236 71.3492L152.407 73.7114C151.761 74.4449 150.955 75.0025 149.972 75.3986C149.004 75.8094 147.875 76.0001 146.599 76.0001Z" fill="#222220"/>
-<path d="M27.6597 75.8091H0V39.9219H10.0021V65.803H27.6597V75.8091Z" fill="#222220"/>
-<path d="M73.5048 75.8092H37.6323V65.803H63.4881V48.1382H73.5048V75.8092Z" fill="#222220"/>
-<path d="M10.0021 29.945H0V2.27393H35.8725V12.2948H10.0021V29.945Z" fill="#222220"/>
-<path d="M59.4404 40.9635C56.8006 40.9635 54.1901 40.6114 51.6236 39.9071C49.0571 39.2029 46.8425 38.1759 44.9946 36.8407L48.4118 30.165C49.8637 31.2214 51.5356 32.0577 53.4275 32.6886C55.334 33.3195 57.2699 33.6423 59.2644 33.6423C61.479 33.6423 63.2095 33.2021 64.4708 32.3071C65.732 31.4268 66.3773 30.2091 66.3773 28.6979C66.3773 27.2454 65.82 26.1156 64.6908 25.2793C63.5615 24.443 61.7576 24.0322 59.2644 24.0322H55.3047V18.2662L65.8347 6.20597L66.8173 9.36041H46.9012V2.27393H73.5049V7.98126L62.9749 19.9828L58.5165 17.4299H61.0683C65.732 17.4299 69.2812 18.4863 71.6863 20.5844C74.0915 22.6824 75.2941 25.3674 75.2941 28.6245C75.2941 30.7959 74.7222 32.8206 73.5782 34.7133C72.4343 36.5913 70.7037 38.1025 68.3865 39.2469C66.084 40.3913 63.1069 40.9635 59.4404 40.9635Z" fill="#222220"/>
-</g>
-<defs>
-<clipPath id="clip0_14_176">
-<rect width="172.66" height="76" fill="white"/>
-</clipPath>
-</defs>
-</svg>
-      </span>
-      <span class="brand-name" data-i18n="brand">HTML Viewer</span>
-    </div>
+    <div class="grid">
+      <a class="card" href="html/" data-i18n-aria="htmlName" aria-label="HTML Viewer">
+        <span class="card-icon" aria-hidden="true">&lt;/&gt;</span>
+        <span class="card-text">
+          <div class="card-name" data-i18n="htmlName">HTML Viewer</div>
+          <div class="card-desc" data-i18n="htmlDesc">Open HTML files</div>
+        </span>
+      </a>
 
-    <div class="dropzone" id="dropzone" role="button" tabindex="0"
-         data-i18n-aria="dzAria" aria-label="Choose an HTML file to open">
-      <div class="dz-icon" aria-hidden="true">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <path d="M14 2v6h6"/>
-          <path d="M12 18v-6"/>
-          <path d="M9 15l3 3 3-3"/>
-        </svg>
+      <a class="card" href="md/" data-i18n-aria="mdName" aria-label="Markdown Viewer">
+        <span class="card-icon" aria-hidden="true">md</span>
+        <span class="card-text">
+          <div class="card-name" data-i18n="mdName">Markdown Viewer</div>
+          <div class="card-desc" data-i18n="mdDesc">Open Markdown files</div>
+        </span>
+      </a>
+
+      <div class="card soon">
+        <span class="card-icon" aria-hidden="true">pdf</span>
+        <span class="card-text">
+          <div class="card-name">PDF Viewer</div>
+          <div class="card-desc">Open PDF files</div>
+        </span>
+        <span class="badge" data-i18n="soon">Soon</span>
       </div>
-      <p class="dz-title" data-i18n="openTitle">Open an HTML file</p>
-      <p class="dz-sub" data-i18n="openSub">Tap to choose a file from your device</p>
-      <button class="btn" type="button" id="chooseBtn" data-i18n="chooseBtn">Choose file</button>
+
+      <div class="card soon">
+        <span class="card-icon" aria-hidden="true">csv</span>
+        <span class="card-text">
+          <div class="card-name">CSV Viewer</div>
+          <div class="card-desc">Open CSV files</div>
+        </span>
+        <span class="badge" data-i18n="soon">Soon</span>
+      </div>
     </div>
-
-    <p class="error hidden" id="error"></p>
-
-    <p class="privacy" id="privacy" data-i18n="privacy">
-      Your file stays on your device. Nothing is uploaded to a server.
-      Works with .html and .htm files.
-    </p>
-
-    <input type="file" id="fileInput" accept=".html,.htm,text/html" hidden>
-  </main>
-
-  <!-- Viewer screen -->
-  <div class="viewer hidden" id="viewer">
-    <div class="toolbar">
-      <button class="tool-btn" type="button" id="backBtn" data-i18n-aria="backAria" aria-label="Back">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
-        </svg>
-        <span data-i18n="back">Back</span>
-      </button>
-      <span class="filename" id="filename"></span>
-      <button class="tool-btn" type="button" id="newTabBtn" data-i18n-aria="newTabAria" aria-label="New tab">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-          <path d="M15 3h6v6"/><path d="M10 14L21 3"/>
-        </svg>
-        <span data-i18n="newTab">New tab</span>
-      </button>
-    </div>
-    <iframe class="frame" id="frame" title="Rendered HTML"></iframe>
   </div>
 
+  <script src="shared/i18n.js"></script>
   <script>
     (function () {
       "use strict";
-
-      /* ---------- Translations ---------- */
-      var I18N = {
-        "ja": {
-          brand: "HTMLビューア",
-          openTitle: "HTMLファイルを開く",
-          openSub: "タップしてデバイスからファイルを選択",
-          chooseBtn: "ファイルを選択",
-          privacy: "ファイルはデバイス内に保持され、サーバーにアップロードされることはありません。.html および .htm ファイルに対応しています。",
-          error: "HTMLファイルではないようです。.html または .htm ファイルを選択してください。",
-          back: "戻る",
-          newTab: "新しいタブ",
-          dzAria: "HTMLファイルを選択して開く",
-          backAria: "アップロード画面に戻る",
-          newTabAria: "新しいタブで開く",
-          langAria: "言語"
-        },
-        "en": {
-          brand: "HTML Viewer",
-          openTitle: "Open an HTML file",
-          openSub: "Tap to choose a file from your device",
-          chooseBtn: "Choose file",
-          privacy: "Your file stays on your device and is never uploaded to a server. Works with .html and .htm files.",
-          error: "That doesn't look like an HTML file. Please pick a .html or .htm file.",
-          back: "Back",
-          newTab: "New tab",
-          dzAria: "Choose an HTML file to open",
-          backAria: "Back to upload",
-          newTabAria: "Open in a new tab",
-          langAria: "Language"
-        },
-        "zh-Hans": {
-          brand: "HTML 查看器",
-          openTitle: "打开 HTML 文件",
-          openSub: "点击从设备中选择文件",
-          chooseBtn: "选择文件",
-          privacy: "文件保存在您的设备上，不会上传到服务器。支持 .html 和 .htm 文件。",
-          error: "这似乎不是 HTML 文件。请选择 .html 或 .htm 文件。",
-          back: "返回",
-          newTab: "新标签页",
-          dzAria: "选择要打开的 HTML 文件",
-          backAria: "返回上传页面",
-          newTabAria: "在新标签页中打开",
-          langAria: "语言"
-        },
-        "zh-Hant": {
-          brand: "HTML 檢視器",
-          openTitle: "開啟 HTML 檔案",
-          openSub: "點選從裝置中選擇檔案",
-          chooseBtn: "選擇檔案",
-          privacy: "檔案保存在您的裝置上，不會上傳到伺服器。支援 .html 和 .htm 檔案。",
-          error: "這似乎不是 HTML 檔案。請選擇 .html 或 .htm 檔案。",
-          back: "返回",
-          newTab: "新分頁",
-          dzAria: "選擇要開啟的 HTML 檔案",
-          backAria: "返回上傳頁面",
-          newTabAria: "在新分頁中開啟",
-          langAria: "語言"
-        },
-        "ko": {
-          brand: "HTML 뷰어",
-          openTitle: "HTML 파일 열기",
-          openSub: "탭하여 기기에서 파일을 선택하세요",
-          chooseBtn: "파일 선택",
-          privacy: "파일은 기기에 저장되며 서버에 업로드되지 않습니다. .html 및 .htm 파일을 지원합니다.",
-          error: "HTML 파일이 아닌 것 같습니다. .html 또는 .htm 파일을 선택해 주세요.",
-          back: "뒤로",
-          newTab: "새 탭",
-          dzAria: "열 HTML 파일 선택",
-          backAria: "업로드 화면으로 돌아가기",
-          newTabAria: "새 탭에서 열기",
-          langAria: "언어"
-        },
-        "ms": {
-          brand: "Pemapar HTML",
-          openTitle: "Buka fail HTML",
-          openSub: "Ketik untuk memilih fail dari peranti anda",
-          chooseBtn: "Pilih fail",
-          privacy: "Fail anda kekal pada peranti anda dan tidak dimuat naik ke pelayan. Menyokong fail .html dan .htm.",
-          error: "Ini nampaknya bukan fail HTML. Sila pilih fail .html atau .htm.",
-          back: "Kembali",
-          newTab: "Tab baharu",
-          dzAria: "Pilih fail HTML untuk dibuka",
-          backAria: "Kembali ke muat naik",
-          newTabAria: "Buka dalam tab baharu",
-          langAria: "Bahasa"
-        }
+      var LANDING = {
+        "ja": { heroTitle: "LLL \u30c4\u30fc\u30eb", heroSub: "\u30b9\u30de\u30db\u3067\u4f7f\u3048\u308b\u4fbf\u5229\u306a\u30d5\u30a1\u30a4\u30eb\u30c4\u30fc\u30eb", htmlName: "HTML\u30d3\u30e5\u30fc\u30a2", htmlDesc: "HTML\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u304f", mdName: "Markdown\u30d3\u30e5\u30fc\u30a2", mdDesc: "Markdown\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u304f", soon: "\u8fd1\u65e5\u516c\u958b" },
+        "en": { heroTitle: "LLL Tools", heroSub: "Handy file tools for your phone", htmlName: "HTML Viewer", htmlDesc: "Open HTML files", mdName: "Markdown Viewer", mdDesc: "Open Markdown files", soon: "Soon" },
+        "zh-Hans": { heroTitle: "LLL \u5de5\u5177", heroSub: "\u624b\u673a\u4e0a\u7684\u5b9e\u7528\u6587\u4ef6\u5de5\u5177", htmlName: "HTML \u67e5\u770b\u5668", htmlDesc: "\u6253\u5f00 HTML \u6587\u4ef6", mdName: "Markdown \u67e5\u770b\u5668", mdDesc: "\u6253\u5f00 Markdown \u6587\u4ef6", soon: "\u5373\u5c06\u63a8\u51fa" },
+        "zh-Hant": { heroTitle: "LLL \u5de5\u5177", heroSub: "\u624b\u6a5f\u4e0a\u7684\u5be6\u7528\u6a94\u6848\u5de5\u5177", htmlName: "HTML \u6aa2\u8996\u5668", htmlDesc: "\u958b\u555f HTML \u6a94\u6848", mdName: "Markdown \u6aa2\u8996\u5668", mdDesc: "\u958b\u555f Markdown \u6a94\u6848", soon: "\u5373\u5c07\u63a8\u51fa" },
+        "ko": { heroTitle: "LLL \ub3c4\uad6c", heroSub: "\ud734\ub300\ud3f0\uc6a9 \ud3b8\ub9ac\ud55c \ud30c\uc77c \ub3c4\uad6c", htmlName: "HTML \ubdf0\uc5b4", htmlDesc: "HTML \ud30c\uc77c \uc5f4\uae30", mdName: "Markdown \ubdf0\uc5b4", mdDesc: "Markdown \ud30c\uc77c \uc5f4\uae30", soon: "\uacf5\uac1c \uc608\uc815" },
+        "ms": { heroTitle: "Alat LLL", heroSub: "Alat fail berguna untuk telefon anda", htmlName: "Pemapar HTML", htmlDesc: "Buka fail HTML", mdName: "Pemapar Markdown", mdDesc: "Buka fail Markdown", soon: "Akan datang" }
       };
-
-      var DEFAULT_LANG = "ja";
-      var STORAGE_KEY = "lll_html_lang";
-      var currentDict = I18N[DEFAULT_LANG];
-
-      /* ---------- Elements ---------- */
-      var fileInput = document.getElementById("fileInput");
-      var dropzone  = document.getElementById("dropzone");
-      var chooseBtn = document.getElementById("chooseBtn");
-      var uploader  = document.getElementById("uploader");
-      var viewer    = document.getElementById("viewer");
-      var frame     = document.getElementById("frame");
-      var filename  = document.getElementById("filename");
-      var backBtn   = document.getElementById("backBtn");
-      var newTabBtn = document.getElementById("newTabBtn");
-      var errorEl   = document.getElementById("error");
-      var langSelect = document.getElementById("langSelect");
-
-      var currentUrl = null;
-
-      /* ---------- Storage (safe, degrades gracefully) ---------- */
-      function safeGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-      function safeSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-
-      /* ---------- Language ---------- */
-      function applyLang(code) {
-        var dict = I18N[code] || I18N[DEFAULT_LANG];
-        currentDict = dict;
-
-        document.documentElement.lang = code;
-        document.title = dict.brand;
-
-        document.querySelectorAll("[data-i18n]").forEach(function (el) {
-          var key = el.getAttribute("data-i18n");
-          if (dict[key] != null) el.textContent = dict[key];
-        });
-        document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
-          var key = el.getAttribute("data-i18n-aria");
-          if (dict[key] != null) el.setAttribute("aria-label", dict[key]);
-        });
-
-        langSelect.value = code;
-        safeSet(STORAGE_KEY, code);
-
-        if (!errorEl.classList.contains("hidden")) errorEl.textContent = dict.error;
-      }
-
-      langSelect.addEventListener("change", function (e) { applyLang(e.target.value); });
-
-      /* ---------- File handling ---------- */
-      function isHtml(file) {
-        var name = (file.name || "").toLowerCase();
-        return name.endsWith(".html") || name.endsWith(".htm") || file.type === "text/html";
-      }
-
-      function showError() {
-        errorEl.textContent = currentDict.error;
-        errorEl.classList.remove("hidden");
-      }
-      function clearError() { errorEl.classList.add("hidden"); }
-
-      function openFile(file) {
-        if (!file) return;
-        if (!isHtml(file)) { showError(); return; }
-        clearError();
-
-        if (currentUrl) URL.revokeObjectURL(currentUrl);
-        currentUrl = URL.createObjectURL(file);
-
-        frame.src = currentUrl;
-        filename.textContent = file.name;
-
-        uploader.classList.add("hidden");
-        viewer.classList.remove("hidden");
-      }
-
-      function closeViewer() {
-        viewer.classList.add("hidden");
-        uploader.classList.remove("hidden");
-        frame.src = "about:blank";
-        if (currentUrl) { URL.revokeObjectURL(currentUrl); currentUrl = null; }
-        fileInput.value = "";
-      }
-
-      function pick() { fileInput.click(); }
-
-      chooseBtn.addEventListener("click", function (e) { e.stopPropagation(); pick(); });
-      dropzone.addEventListener("click", pick);
-      dropzone.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); }
-      });
-      fileInput.addEventListener("change", function (e) { openFile(e.target.files[0]); });
-
-      ["dragenter", "dragover"].forEach(function (evt) {
-        dropzone.addEventListener(evt, function (e) { e.preventDefault(); dropzone.classList.add("dragging"); });
-      });
-      ["dragleave", "drop"].forEach(function (evt) {
-        dropzone.addEventListener(evt, function (e) { e.preventDefault(); dropzone.classList.remove("dragging"); });
-      });
-      dropzone.addEventListener("drop", function (e) {
-        var files = e.dataTransfer && e.dataTransfer.files;
-        if (files && files.length) openFile(files[0]);
-      });
-
-      backBtn.addEventListener("click", closeViewer);
-      newTabBtn.addEventListener("click", function () {
-        if (currentUrl) window.open(currentUrl, "_blank");
-      });
-
-      /* ---------- Init ---------- */
-      var stored = safeGet(STORAGE_KEY);
-      applyLang(stored && I18N[stored] ? stored : DEFAULT_LANG);
+      LLL_I18N.init(LANDING, { switcherHost: document.getElementById("langSlot") });
     })();
   </script>
 </body>
