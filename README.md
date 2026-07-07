@@ -11,8 +11,8 @@ phone — nothing is uploaded to a server.
 |---------|-----------------|--------------------|
 | `/html` | HTML Viewer     | `.html`, `.htm`    |
 | `/md`   | Markdown Viewer | `.md`, `.markdown` |
-| `/pdf`  | *(planned)*     | `.pdf`             |
-| `/csv`  | *(planned)*     | `.csv`             |
+| `/pdf`  | PDF Viewer      | `.pdf`             |
+| `/csv`  | CSV Viewer      | `.csv`, `.tsv`     |
 
 ## Structure
 
@@ -26,7 +26,9 @@ lll-tools/
 │   ├── favicon.svg
 │   └── vendor/         local copies of third-party libs (offline-capable)
 │       ├── marked.min.js
-│       └── purify.min.js
+│       ├── purify.min.js
+│       ├── papaparse.min.js
+│       └── pdfjs/ (pdf.min.js + worker)
 ├── html/index.html     HTML Viewer
 └── md/index.html       Markdown Viewer
 ```
