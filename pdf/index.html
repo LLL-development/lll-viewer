@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#222220">
+<link rel="icon" href="../shared/favicon.svg">
+<link rel="stylesheet" href="../shared/brand.css">
+<title>PDF Viewer</title>
+<style>
+  .pdf-scroll {
+    flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #53534f;
+    padding: 16px 0 max(24px, env(safe-area-inset-bottom));
+    text-align: center;
+  }
+  .pdf-page {
+    display: block;
+    margin: 0 auto 14px;
+    max-width: calc(100% - 24px);
+    height: auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    background: #fff;
+  }
+  .pdf-loading {
+    color: #fff;
+    font-size: 14px;
+    padding: 40px 20px;
+  }
+</style>
+</head>
+<body>
+
+  <main class="uploader" id="uploader">
+    <div id="langSlot" data-fixed="true"></div>
+
+    <div class="brand">
+      <span class="brand-logo" role="img" aria-label="Live Laugh Love">
+        <img src="../shared/logo.svg" alt="LLL">
+      </span>
+      <span class="brand-name" data-i18n="brand">PDF Viewer</span>
+    </div>
+
+    <div class="dropzone" id="dropzone" role="button" tabindex="0"
+         data-i18n-aria="dzAria" aria-label="Choose a PDF file to open">
+      <div class="dz-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6"/>
+          <path d="M9 13h1a1.5 1.5 0 0 1 0 3H9v-3z"/><path d="M9 13v5"/>
+        </svg>
+      </div>
+      <p class="dz-title" data-i18n="openTitle">Open a PDF file</p>
+      <p class="dz-sub" data-i18n="openSub">Tap to choose a file from your device</p>
+      <button class="btn" type="button" id="chooseBtn" data-i18n="chooseBtn">Choose file</button>
+    </div>
+
+    <p class="error hidden" id="error"></p>
+    <p class="privacy" data-i18n="privacy">Your file stays on your device.</p>
+
+    <input type="file" id="fileInput" accept=".pdf,application/pdf" hidden>
+  </main>
+
+  <div class="viewer hidden" id="viewer">
+    <div class="toolbar">
+      <button class="tool-btn" type="button" id="backBtn" data-i18n-aria="backAria" aria-label="Back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+        </svg>
+        <span data-i18n="back">Back</span>
+      </button>
+      <span class="filename" id="filename"></span>
+      <button class="tool-btn" type="button" id="newTabBtn" data-i18n-aria="newTabAria" aria-label="New tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <path d="M15 3h6v6"/><path d="M10 14L21 3"/>
+        </svg>
+        <span data-i18n="newTab">New tab</span>
+      </button>
+    </div>
+    <div class="pdf-scroll" id="pdfScroll"></div>
+  </div>
+
+  <script src="../shared/vendor/pdfjs/pdf.min.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      var TOOL_STRINGS = {
+        "ja": { brand: "PDF\u30d3\u30e5\u30fc\u30a2", openTitle: "PDF\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u304f", openSub: "\u30bf\u30c3\u30d7\u3057\u3066\u30c7\u30d0\u30a4\u30b9\u304b\u3089\u30d5\u30a1\u30a4\u30eb\u3092\u9078\u629e", privacy: "\u30d5\u30a1\u30a4\u30eb\u306f\u30c7\u30d0\u30a4\u30b9\u5185\u306b\u4fdd\u6301\u3055\u308c\u3001\u30b5\u30fc\u30d0\u30fc\u306b\u30a2\u30c3\u30d7\u30ed\u30fc\u30c9\u3055\u308c\u308b\u3053\u3068\u306f\u3042\u308a\u307e\u305b\u3093\u3002.pdf \u30d5\u30a1\u30a4\u30eb\u306b\u5bfe\u5fdc\u3057\u3066\u3044\u307e\u3059\u3002", error: "PDF\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u3051\u307e\u305b\u3093\u3067\u3057\u305f\u3002.pdf \u30d5\u30a1\u30a4\u30eb\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044\u3002", dzAria: "PDF\u30d5\u30a1\u30a4\u30eb\u3092\u9078\u629e\u3057\u3066\u958b\u304f", loading: "\u8aad\u307f\u8fbc\u307f\u4e2d\u2026" },
+        "en": { brand: "PDF Viewer", openTitle: "Open a PDF file", openSub: "Tap to choose a file from your device", privacy: "Your file stays on your device and is never uploaded to a server. Works with .pdf files.", error: "Couldn't open that PDF. Please pick a valid .pdf file.", dzAria: "Choose a PDF file to open", loading: "Loading\u2026" },
+        "zh-Hans": { brand: "PDF \u67e5\u770b\u5668", openTitle: "\u6253\u5f00 PDF \u6587\u4ef6", openSub: "\u70b9\u51fb\u4ece\u8bbe\u5907\u4e2d\u9009\u62e9\u6587\u4ef6", privacy: "\u6587\u4ef6\u4fdd\u5b58\u5728\u60a8\u7684\u8bbe\u5907\u4e0a\uff0c\u4e0d\u4f1a\u4e0a\u4f20\u5230\u670d\u52a1\u5668\u3002\u652f\u6301 .pdf \u6587\u4ef6\u3002", error: "\u65e0\u6cd5\u6253\u5f00\u8be5 PDF\u3002\u8bf7\u9009\u62e9\u6709\u6548\u7684 .pdf \u6587\u4ef6\u3002", dzAria: "\u9009\u62e9\u8981\u6253\u5f00\u7684 PDF \u6587\u4ef6", loading: "\u52a0\u8f7d\u4e2d\u2026" },
+        "zh-Hant": { brand: "PDF \u6aa2\u8996\u5668", openTitle: "\u958b\u555f PDF \u6a94\u6848", openSub: "\u9ede\u9078\u5f9e\u88dd\u7f6e\u4e2d\u9078\u64c7\u6a94\u6848", privacy: "\u6a94\u6848\u4fdd\u5b58\u5728\u60a8\u7684\u88dd\u7f6e\u4e0a\uff0c\u4e0d\u6703\u4e0a\u50b3\u5230\u4f3a\u670d\u5668\u3002\u652f\u63f4 .pdf \u6a94\u6848\u3002", error: "\u7121\u6cd5\u958b\u555f\u8a72 PDF\u3002\u8acb\u9078\u64c7\u6709\u6548\u7684 .pdf \u6a94\u6848\u3002", dzAria: "\u9078\u64c7\u8981\u958b\u555f\u7684 PDF \u6a94\u6848", loading: "\u8f09\u5165\u4e2d\u2026" },
+        "ko": { brand: "PDF \ubdf0\uc5b4", openTitle: "PDF \ud30c\uc77c \uc5f4\uae30", openSub: "\ud0ed\ud558\uc5ec \uae30\uae30\uc5d0\uc11c \ud30c\uc77c\uc744 \uc120\ud0dd\ud558\uc138\uc694", privacy: "\ud30c\uc77c\uc740 \uae30\uae30\uc5d0 \uc800\uc7a5\ub418\uba70 \uc11c\ubc84\uc5d0 \uc5c5\ub85c\ub4dc\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4. .pdf \ud30c\uc77c\uc744 \uc9c0\uc6d0\ud569\ub2c8\ub2e4.", error: "\ud574\ub2f9 PDF\ub97c \uc5f4 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4. \uc720\ud6a8\ud55c .pdf \ud30c\uc77c\uc744 \uc120\ud0dd\ud574 \uc8fc\uc138\uc694.", dzAria: "\uc5f4 PDF \ud30c\uc77c \uc120\ud0dd", loading: "\ubd88\ub7ec\uc624\ub294 \uc911\u2026" },
+        "ms": { brand: "Pemapar PDF", openTitle: "Buka fail PDF", openSub: "Ketik untuk memilih fail dari peranti anda", privacy: "Fail anda kekal pada peranti anda dan tidak dimuat naik ke pelayan. Menyokong fail .pdf.", error: "Tidak dapat membuka PDF itu. Sila pilih fail .pdf yang sah.", dzAria: "Pilih fail PDF untuk dibuka", loading: "Memuatkan\u2026" }
+      };
+
+      var fileInput = document.getElementById("fileInput");
+      var dropzone  = document.getElementById("dropzone");
+      var chooseBtn = document.getElementById("chooseBtn");
+      var uploader  = document.getElementById("uploader");
+      var viewer    = document.getElementById("viewer");
+      var pdfScroll = document.getElementById("pdfScroll");
+      var filename  = document.getElementById("filename");
+      var backBtn   = document.getElementById("backBtn");
+      var newTabBtn = document.getElementById("newTabBtn");
+      var errorEl   = document.getElementById("error");
+
+      var currentUrl = null;
+      var renderToken = 0; // cancels stale renders when user goes back
+
+      LLL_I18N.init(TOOL_STRINGS, {
+        switcherHost: document.getElementById("langSlot"),
+        onChange: function () {
+          if (!errorEl.classList.contains("hidden")) errorEl.textContent = LLL_I18N.t("error");
+        }
+      });
+
+      // PDF.js worker (local, no CDN)
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "../shared/vendor/pdfjs/pdf.worker.min.js";
+
+      function isPdf(file) {
+        var name = (file.name || "").toLowerCase();
+        return name.endsWith(".pdf") || file.type === "application/pdf";
+      }
+      function showError() { errorEl.textContent = LLL_I18N.t("error"); errorEl.classList.remove("hidden"); }
+      function clearError() { errorEl.classList.add("hidden"); }
+
+      function openFile(file) {
+        if (!file) return;
+        if (!isPdf(file)) { showError(); return; }
+        clearError();
+
+        if (currentUrl) URL.revokeObjectURL(currentUrl);
+        currentUrl = URL.createObjectURL(file);
+        filename.textContent = file.name;
+
+        uploader.classList.add("hidden");
+        viewer.classList.remove("hidden");
+        pdfScroll.innerHTML = '<div class="pdf-loading">' + LLL_I18N.t("loading") + '</div>';
+
+        var token = ++renderToken;
+        file.arrayBuffer().then(function (buf) {
+          return pdfjsLib.getDocument({ data: buf }).promise;
+        }).then(function (pdf) {
+          if (token !== renderToken) return;
+          pdfScroll.innerHTML = "";
+          renderAllPages(pdf, token);
+        }).catch(function () {
+          if (token !== renderToken) return;
+          closeViewer();
+          showError();
+        });
+      }
+
+      function renderAllPages(pdf, token) {
+        var scale = Math.min(2, (window.devicePixelRatio || 1) * 1.3);
+        var width = pdfScroll.clientWidth - 24;
+
+        function renderPage(n) {
+          if (token !== renderToken || n > pdf.numPages) return;
+          pdf.getPage(n).then(function (page) {
+            if (token !== renderToken) return;
+            var base = page.getViewport({ scale: 1 });
+            var fit = Math.min(scale, (width / base.width) * (window.devicePixelRatio || 1));
+            var viewport = page.getViewport({ scale: fit });
+
+            var canvas = document.createElement("canvas");
+            canvas.className = "pdf-page";
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            canvas.style.width = (viewport.width / (window.devicePixelRatio || 1)) + "px";
+            pdfScroll.appendChild(canvas);
+
+            page.render({ canvasContext: canvas.getContext("2d"), viewport: viewport }).promise
+              .then(function () { renderPage(n + 1); })
+              .catch(function () { renderPage(n + 1); });
+          });
+        }
+        renderPage(1);
+      }
+
+      function closeViewer() {
+        renderToken++; // cancel any in-flight rendering
+        viewer.classList.add("hidden");
+        uploader.classList.remove("hidden");
+        pdfScroll.innerHTML = "";
+        if (currentUrl) { URL.revokeObjectURL(currentUrl); currentUrl = null; }
+        fileInput.value = "";
+      }
+
+      function pick() { fileInput.click(); }
+
+      chooseBtn.addEventListener("click", function (e) { e.stopPropagation(); pick(); });
+      dropzone.addEventListener("click", pick);
+      dropzone.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); }
+      });
+      fileInput.addEventListener("change", function (e) { openFile(e.target.files[0]); });
+      ["dragenter", "dragover"].forEach(function (evt) {
+        dropzone.addEventListener(evt, function (e) { e.preventDefault(); dropzone.classList.add("dragging"); });
+      });
+      ["dragleave", "drop"].forEach(function (evt) {
+        dropzone.addEventListener(evt, function (e) { e.preventDefault(); dropzone.classList.remove("dragging"); });
+      });
+      dropzone.addEventListener("drop", function (e) {
+        var files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length) openFile(files[0]);
+      });
+      backBtn.addEventListener("click", closeViewer);
+      newTabBtn.addEventListener("click", function () { if (currentUrl) window.open(currentUrl, "_blank"); });
+    })();
+  </script>
+</body>
+</html>

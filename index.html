@@ -94,23 +94,21 @@
         </span>
       </a>
 
-      <div class="card soon">
+      <a class="card" href="pdf/" data-i18n-aria="pdfName" aria-label="PDF Viewer">
         <span class="card-icon" aria-hidden="true">pdf</span>
         <span class="card-text">
-          <div class="card-name">PDF Viewer</div>
-          <div class="card-desc">Open PDF files</div>
+          <div class="card-name" data-i18n="pdfName">PDF Viewer</div>
+          <div class="card-desc" data-i18n="pdfDesc">Open PDF files</div>
         </span>
-        <span class="badge" data-i18n="soon">Soon</span>
-      </div>
+      </a>
 
-      <div class="card soon">
+      <a class="card" href="csv/" data-i18n-aria="csvName" aria-label="CSV Viewer">
         <span class="card-icon" aria-hidden="true">csv</span>
         <span class="card-text">
-          <div class="card-name">CSV Viewer</div>
-          <div class="card-desc">Open CSV files</div>
+          <div class="card-name" data-i18n="csvName">CSV Viewer</div>
+          <div class="card-desc" data-i18n="csvDesc">Open CSV files</div>
         </span>
-        <span class="badge" data-i18n="soon">Soon</span>
-      </div>
+      </a>
     </div>
   </div>
 
@@ -119,12 +117,12 @@
     (function () {
       "use strict";
       var LANDING = {
-        "ja": { heroTitle: "LLL \u30c4\u30fc\u30eb", heroSub: "\u30b9\u30de\u30db\u3067\u4f7f\u3048\u308b\u4fbf\u5229\u306a\u30d5\u30a1\u30a4\u30eb\u30c4\u30fc\u30eb", htmlName: "HTML\u30d3\u30e5\u30fc\u30a2", htmlDesc: "HTML\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u304f", mdName: "Markdown\u30d3\u30e5\u30fc\u30a2", mdDesc: "Markdown\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u304f", soon: "\u8fd1\u65e5\u516c\u958b" },
-        "en": { heroTitle: "LLL Tools", heroSub: "Handy file tools for your phone", htmlName: "HTML Viewer", htmlDesc: "Open HTML files", mdName: "Markdown Viewer", mdDesc: "Open Markdown files", soon: "Soon" },
-        "zh-Hans": { heroTitle: "LLL \u5de5\u5177", heroSub: "\u624b\u673a\u4e0a\u7684\u5b9e\u7528\u6587\u4ef6\u5de5\u5177", htmlName: "HTML \u67e5\u770b\u5668", htmlDesc: "\u6253\u5f00 HTML \u6587\u4ef6", mdName: "Markdown \u67e5\u770b\u5668", mdDesc: "\u6253\u5f00 Markdown \u6587\u4ef6", soon: "\u5373\u5c06\u63a8\u51fa" },
-        "zh-Hant": { heroTitle: "LLL \u5de5\u5177", heroSub: "\u624b\u6a5f\u4e0a\u7684\u5be6\u7528\u6a94\u6848\u5de5\u5177", htmlName: "HTML \u6aa2\u8996\u5668", htmlDesc: "\u958b\u555f HTML \u6a94\u6848", mdName: "Markdown \u6aa2\u8996\u5668", mdDesc: "\u958b\u555f Markdown \u6a94\u6848", soon: "\u5373\u5c07\u63a8\u51fa" },
-        "ko": { heroTitle: "LLL \ub3c4\uad6c", heroSub: "\ud734\ub300\ud3f0\uc6a9 \ud3b8\ub9ac\ud55c \ud30c\uc77c \ub3c4\uad6c", htmlName: "HTML \ubdf0\uc5b4", htmlDesc: "HTML \ud30c\uc77c \uc5f4\uae30", mdName: "Markdown \ubdf0\uc5b4", mdDesc: "Markdown \ud30c\uc77c \uc5f4\uae30", soon: "\uacf5\uac1c \uc608\uc815" },
-        "ms": { heroTitle: "Alat LLL", heroSub: "Alat fail berguna untuk telefon anda", htmlName: "Pemapar HTML", htmlDesc: "Buka fail HTML", mdName: "Pemapar Markdown", mdDesc: "Buka fail Markdown", soon: "Akan datang" }
+        "ja": { pdfName: "PDFビューア", pdfDesc: "PDFファイルを開く", csvName: "CSVビューア", csvDesc: "CSVファイルを開く", heroTitle: "LLL \u30c4\u30fc\u30eb", heroSub: "\u30b9\u30de\u30db\u3067\u4f7f\u3048\u308b\u4fbf\u5229\u306a\u30d5\u30a1\u30a4\u30eb\u30c4\u30fc\u30eb", htmlName: "HTML\u30d3\u30e5\u30fc\u30a2", htmlDesc: "HTML\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u304f", mdName: "Markdown\u30d3\u30e5\u30fc\u30a2", mdDesc: "Markdown\u30d5\u30a1\u30a4\u30eb\u3092\u958b\u304f", soon: "\u8fd1\u65e5\u516c\u958b" },
+        "en": { pdfName: "PDF Viewer", pdfDesc: "Open PDF files", csvName: "CSV Viewer", csvDesc: "Open CSV files", heroTitle: "LLL Tools", heroSub: "Handy file tools for your phone", htmlName: "HTML Viewer", htmlDesc: "Open HTML files", mdName: "Markdown Viewer", mdDesc: "Open Markdown files", soon: "Soon" },
+        "zh-Hans": { pdfName: "PDF 查看器", pdfDesc: "打开 PDF 文件", csvName: "CSV 查看器", csvDesc: "打开 CSV 文件", heroTitle: "LLL \u5de5\u5177", heroSub: "\u624b\u673a\u4e0a\u7684\u5b9e\u7528\u6587\u4ef6\u5de5\u5177", htmlName: "HTML \u67e5\u770b\u5668", htmlDesc: "\u6253\u5f00 HTML \u6587\u4ef6", mdName: "Markdown \u67e5\u770b\u5668", mdDesc: "\u6253\u5f00 Markdown \u6587\u4ef6", soon: "\u5373\u5c06\u63a8\u51fa" },
+        "zh-Hant": { pdfName: "PDF 檢視器", pdfDesc: "開啟 PDF 檔案", csvName: "CSV 檢視器", csvDesc: "開啟 CSV 檔案", heroTitle: "LLL \u5de5\u5177", heroSub: "\u624b\u6a5f\u4e0a\u7684\u5be6\u7528\u6a94\u6848\u5de5\u5177", htmlName: "HTML \u6aa2\u8996\u5668", htmlDesc: "\u958b\u555f HTML \u6a94\u6848", mdName: "Markdown \u6aa2\u8996\u5668", mdDesc: "\u958b\u555f Markdown \u6a94\u6848", soon: "\u5373\u5c07\u63a8\u51fa" },
+        "ko": { pdfName: "PDF 뷰어", pdfDesc: "PDF 파일 열기", csvName: "CSV 뷰어", csvDesc: "CSV 파일 열기", heroTitle: "LLL \ub3c4\uad6c", heroSub: "\ud734\ub300\ud3f0\uc6a9 \ud3b8\ub9ac\ud55c \ud30c\uc77c \ub3c4\uad6c", htmlName: "HTML \ubdf0\uc5b4", htmlDesc: "HTML \ud30c\uc77c \uc5f4\uae30", mdName: "Markdown \ubdf0\uc5b4", mdDesc: "Markdown \ud30c\uc77c \uc5f4\uae30", soon: "\uacf5\uac1c \uc608\uc815" },
+        "ms": { pdfName: "Pemapar PDF", pdfDesc: "Buka fail PDF", csvName: "Pemapar CSV", csvDesc: "Buka fail CSV", heroTitle: "Alat LLL", heroSub: "Alat fail berguna untuk telefon anda", htmlName: "Pemapar HTML", htmlDesc: "Buka fail HTML", mdName: "Pemapar Markdown", mdDesc: "Buka fail Markdown", soon: "Akan datang" }
       };
       LLL_I18N.init(LANDING, { switcherHost: document.getElementById("langSlot") });
     })();
