@@ -10,12 +10,12 @@
 <style>
   .page {
     position: relative;
-    min-height: 100dvh;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 24px;
-    padding-top: max(72px, calc(env(safe-area-inset-top) + 56px));
+    padding: 40px 24px;
   }
   .hero { text-align: center; margin-bottom: 36px; }
   .hero-logo img { height: 46px; width: auto; display: inline-block; }
@@ -68,8 +68,8 @@
 </style>
 </head>
 <body>
+  <div id="navHost"></div>
   <div class="page">
-    <div id="langSlot" data-fixed="true"></div>
 
     <div class="hero">
       <div class="hero-logo"><img src="shared/logo.svg" alt="Live Laugh Love"></div>
@@ -112,6 +112,7 @@
     </div>
   </div>
 
+  <script src="shared/nav.js"></script>
   <script src="shared/i18n.js"></script>
   <script>
     (function () {
@@ -124,7 +125,8 @@
         "ko": { pdfName: "PDF 뷰어", pdfDesc: "PDF 파일 열기", csvName: "CSV 뷰어", csvDesc: "CSV 파일 열기", heroTitle: "LLL \ub3c4\uad6c", heroSub: "\ud734\ub300\ud3f0\uc6a9 \ud3b8\ub9ac\ud55c \ud30c\uc77c \ub3c4\uad6c", htmlName: "HTML \ubdf0\uc5b4", htmlDesc: "HTML \ud30c\uc77c \uc5f4\uae30", mdName: "Markdown \ubdf0\uc5b4", mdDesc: "Markdown \ud30c\uc77c \uc5f4\uae30", soon: "\uacf5\uac1c \uc608\uc815" },
         "ms": { pdfName: "Pemapar PDF", pdfDesc: "Buka fail PDF", csvName: "Pemapar CSV", csvDesc: "Buka fail CSV", heroTitle: "Alat LLL", heroSub: "Alat fail berguna untuk telefon anda", htmlName: "Pemapar HTML", htmlDesc: "Buka fail HTML", mdName: "Pemapar Markdown", mdDesc: "Buka fail Markdown", soon: "Akan datang" }
       };
-      LLL_I18N.init(LANDING, { switcherHost: document.getElementById("langSlot") });
+      var __langHost = LLL_NAV.build(document.getElementById("navHost"), { base: "", active: "" });
+      LLL_I18N.init(LANDING, { switcherHost: __langHost });
     })();
   </script>
 </body>
