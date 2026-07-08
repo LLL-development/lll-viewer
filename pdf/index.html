@@ -33,15 +33,9 @@
 </head>
 <body>
 
-  <main class="uploader" id="uploader">
-    <div id="langSlot" data-fixed="true"></div>
+  <div id="navHost"></div>
 
-    <div class="brand">
-      <span class="brand-logo" role="img" aria-label="Live Laugh Love">
-        <img src="../shared/logo.svg" alt="LLL">
-      </span>
-      <span class="brand-name" data-i18n="brand">PDF Viewer</span>
-    </div>
+  <main class="uploader" id="uploader">
 
     <div class="dropzone" id="dropzone" role="button" tabindex="0"
          data-i18n-aria="dzAria" aria-label="Choose a PDF file to open">
@@ -87,6 +81,7 @@
   </div>
 
   <script src="../shared/vendor/pdfjs/pdf.min.js"></script>
+  <script src="../shared/nav.js"></script>
   <script src="../shared/i18n.js"></script>
   <script>
     (function () {
@@ -115,8 +110,9 @@
       var currentUrl = null;
       var renderToken = 0; // cancels stale renders when user goes back
 
+      var __langHost = LLL_NAV.build(document.getElementById("navHost"), { base: "../", active: "pdf" });
       LLL_I18N.init(TOOL_STRINGS, {
-        switcherHost: document.getElementById("langSlot"),
+        switcherHost: __langHost,
         onChange: function () {
           if (!errorEl.classList.contains("hidden")) errorEl.textContent = LLL_I18N.t("error");
         }

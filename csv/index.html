@@ -41,15 +41,9 @@
 </head>
 <body>
 
-  <main class="uploader" id="uploader">
-    <div id="langSlot" data-fixed="true"></div>
+  <div id="navHost"></div>
 
-    <div class="brand">
-      <span class="brand-logo" role="img" aria-label="Live Laugh Love">
-        <img src="../shared/logo.svg" alt="LLL">
-      </span>
-      <span class="brand-name" data-i18n="brand">CSV Viewer</span>
-    </div>
+  <main class="uploader" id="uploader">
 
     <div class="dropzone" id="dropzone" role="button" tabindex="0"
          data-i18n-aria="dzAria" aria-label="Choose a CSV file to open">
@@ -88,6 +82,7 @@
   </div>
 
   <script src="../shared/vendor/papaparse.min.js"></script>
+  <script src="../shared/nav.js"></script>
   <script src="../shared/i18n.js"></script>
   <script>
     (function () {
@@ -113,8 +108,9 @@
       var backBtn   = document.getElementById("backBtn");
       var errorEl   = document.getElementById("error");
 
+      var __langHost = LLL_NAV.build(document.getElementById("navHost"), { base: "../", active: "csv" });
       LLL_I18N.init(TOOL_STRINGS, {
-        switcherHost: document.getElementById("langSlot"),
+        switcherHost: __langHost,
         onChange: function () {
           if (!errorEl.classList.contains("hidden")) errorEl.textContent = LLL_I18N.t("error");
         }
