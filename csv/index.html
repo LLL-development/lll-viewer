@@ -26,7 +26,7 @@
     font-weight: 600;
     z-index: 1;
   }
-  .csv-table tbody tr:nth-child(even) { background: #fafafa; }
+  .csv-table tbody tr:nth-child(even) { background: var(--bg); }
   .csv-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
   .rowcol {
     font-family: var(--mono);
@@ -38,6 +38,12 @@
     white-space: nowrap;
   }
 </style>
+<script>
+  /* Set theme before paint to avoid a flash of the wrong colours. */
+  (function(){try{var t=localStorage.getItem("lll_theme");
+  if(t!=="dark"&&t!=="light"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}
+  document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
 </head>
 <body>
 
@@ -58,6 +64,7 @@
       <p class="dz-title" data-i18n="openTitle">Open a CSV file</p>
       <p class="dz-sub" data-i18n="openSub">Tap to choose a file from your device</p>
       <button class="btn" type="button" id="chooseBtn" data-i18n="chooseBtn">Choose file</button>
+      <p class="drop-hint" data-i18n="dropHint">or drop a file here</p>
     </div>
 
     <p class="error hidden" id="error"></p>
@@ -82,6 +89,7 @@
   </div>
 
   <script src="../shared/vendor/papaparse.min.js"></script>
+  <script src="../shared/theme.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/i18n.js"></script>
   <script>
@@ -166,29 +174,48 @@
         rowcol.textContent = (rows.length - 1) + " \u00d7 " + maxCols; // data rows × columns
       }
 
+      function showLoading(name) {
+        filename.textContent = name;
+        rowcol.textContent = "";
+        table.textContent = "";
+        document.querySelector(".csv-scroll").innerHTML =
+          '<div class="lll-loading"><div class="lll-spinner"></div><span>' +
+          LLL_I18N.t("loading") + '</span></div>';
+        uploader.classList.add("hidden");
+        viewer.classList.remove("hidden");
+      }
+
+      function restoreTable() {
+        var scroll = document.querySelector(".csv-scroll");
+        scroll.innerHTML = "";
+        scroll.appendChild(table);
+      }
+
       function openFile(file) {
         if (!file) return;
         if (!isCsv(file)) { showError(); return; }
         clearError();
+        showLoading(file.name);
         var isTsv = (file.name || "").toLowerCase().endsWith(".tsv");
         Papa.parse(file, {
           delimiter: isTsv ? "\t" : "",
           skipEmptyLines: "greedy",
           complete: function (res) {
+            restoreTable();
             buildTable(res.data || []);
             filename.textContent = file.name;
-            uploader.classList.add("hidden");
-            viewer.classList.remove("hidden");
             document.querySelector(".csv-scroll").scrollTop = 0;
           },
-          error: function () { showError(); }
+          error: function () { closeViewer(); showError(); }
         });
       }
 
       function closeViewer() {
         viewer.classList.add("hidden");
         uploader.classList.remove("hidden");
+        restoreTable();
         table.textContent = "";
+        rowcol.textContent = "";
         fileInput.value = "";
       }
 

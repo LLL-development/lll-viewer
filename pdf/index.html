@@ -24,12 +24,15 @@
     box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     background: #fff;
   }
-  .pdf-loading {
-    color: #fff;
-    font-size: 14px;
-    padding: 40px 20px;
-  }
+  .pdf-scroll .lll-loading { color: #dcdcd8; }
+  .pdf-scroll .lll-spinner { border-color: #55555a; border-top-color: #dcdcd8; }
 </style>
+<script>
+  /* Set theme before paint to avoid a flash of the wrong colours. */
+  (function(){try{var t=localStorage.getItem("lll_theme");
+  if(t!=="dark"&&t!=="light"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}
+  document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
 </head>
 <body>
 
@@ -50,6 +53,7 @@
       <p class="dz-title" data-i18n="openTitle">Open a PDF file</p>
       <p class="dz-sub" data-i18n="openSub">Tap to choose a file from your device</p>
       <button class="btn" type="button" id="chooseBtn" data-i18n="chooseBtn">Choose file</button>
+      <p class="drop-hint" data-i18n="dropHint">or drop a file here</p>
     </div>
 
     <p class="error hidden" id="error"></p>
@@ -81,6 +85,7 @@
   </div>
 
   <script src="../shared/vendor/pdfjs/pdf.min.js"></script>
+  <script src="../shared/theme.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/i18n.js"></script>
   <script>
@@ -139,7 +144,8 @@
 
         uploader.classList.add("hidden");
         viewer.classList.remove("hidden");
-        pdfScroll.innerHTML = '<div class="pdf-loading">' + LLL_I18N.t("loading") + '</div>';
+        pdfScroll.innerHTML = '<div class="lll-loading"><div class="lll-spinner"></div><span>' +
+                              LLL_I18N.t("loading") + '</span></div>';
 
         var token = ++renderToken;
         file.arrayBuffer().then(function (buf) {
