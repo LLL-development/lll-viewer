@@ -47,6 +47,8 @@
       });
       nav.appendChild(links);
 
+      if (global.LLL_THEME && LLL_THEME.button) nav.appendChild(LLL_THEME.button());
+
       var langHost = document.createElement("div");
       langHost.className = "nav-lang";
       nav.appendChild(langHost);

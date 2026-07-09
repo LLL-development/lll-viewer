@@ -38,7 +38,7 @@
     background: var(--accent-tint); padding: 0.15em 0.4em; border-radius: 5px;
   }
   .md-body pre {
-    background: #1f1f1d; color: #f4f4f2; padding: 14px 16px;
+    background: var(--code-bg); color: var(--code-ink); padding: 14px 16px;
     border-radius: 10px; overflow-x: auto;
   }
   .md-body pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; }
@@ -52,6 +52,12 @@
   .md-body th, .md-body td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; }
   .md-body th { background: var(--accent-tint); font-weight: 600; }
 </style>
+<script>
+  /* Set theme before paint to avoid a flash of the wrong colours. */
+  (function(){try{var t=localStorage.getItem("lll_theme");
+  if(t!=="dark"&&t!=="light"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}
+  document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
 </head>
 <body>
 
@@ -73,6 +79,7 @@
       <p class="dz-title" data-i18n="openTitle">Open a Markdown file</p>
       <p class="dz-sub" data-i18n="openSub">Tap to choose a file from your device</p>
       <button class="btn" type="button" id="chooseBtn" data-i18n="chooseBtn">Choose file</button>
+      <p class="drop-hint" data-i18n="dropHint">or drop a file here</p>
     </div>
 
     <p class="error hidden" id="error"></p>
@@ -105,6 +112,7 @@
 
   <script src="../shared/vendor/marked.min.js"></script>
   <script src="../shared/vendor/purify.min.js"></script>
+  <script src="../shared/theme.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/i18n.js"></script>
   <script>
@@ -164,13 +172,25 @@
         document.querySelector(".md-scroll").scrollTop = 0;
       }
 
+      function showLoading(name) {
+        filename.textContent = name;
+        mdBody.innerHTML = '<div class="lll-loading"><div class="lll-spinner"></div><span>' +
+                           LLL_I18N.t("loading") + '</span></div>';
+        uploader.classList.add("hidden");
+        viewer.classList.remove("hidden");
+      }
+
       function openFile(file) {
         if (!file) return;
         if (!isMarkdown(file)) { showError(); return; }
         clearError();
+        showLoading(file.name);
         var reader = new FileReader();
-        reader.onload = function (e) { render(String(e.target.result || ""), file.name); };
-        reader.onerror = function () { showError(); };
+        reader.onload = function (e) {
+          // Yield a frame so the spinner paints before parsing large files.
+          setTimeout(function () { render(String(e.target.result || ""), file.name); }, 0);
+        };
+        reader.onerror = function () { closeViewer(); showError(); };
         reader.readAsText(file);
       }
 
