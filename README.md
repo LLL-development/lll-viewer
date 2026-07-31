@@ -1,5 +1,7 @@
 # LLL Viewer
 
+Developed by LLL Inc.'s dev team — visit us at https://www.live-laugh-love.world
+
 An all-in-one, mobile-friendly, client-side file viewer. Pick a file, view it on your
 phone — nothing is uploaded to a server.
 
