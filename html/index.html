@@ -60,7 +60,8 @@
         <span data-i18n="newTab">New tab</span>
       </button>
     </div>
-    <iframe class="frame" id="frame" title="Rendered HTML"></iframe>
+    <!-- Keep document scripts functional without granting app-origin storage or DOM access. -->
+    <iframe class="frame" id="frame" title="Rendered HTML" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
   </div>
 
   <script src="../shared/theme.js"></script>
@@ -143,7 +144,9 @@
         if (files && files.length) openFile(files[0]);
       });
       backBtn.addEventListener("click", closeViewer);
-      newTabBtn.addEventListener("click", function () { if (currentUrl) window.open(currentUrl, "_blank"); });
+      newTabBtn.addEventListener("click", function () {
+        if (currentUrl) window.open("preview.html#" + encodeURIComponent(currentUrl), "_blank", "noopener");
+      });
     })();
   </script>
 </body>
