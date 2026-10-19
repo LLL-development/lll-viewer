@@ -84,7 +84,7 @@
     <div class="pdf-scroll" id="pdfScroll"></div>
   </div>
 
-  <script src="../shared/vendor/pdfjs/pdf.min.js"></script>
+  <script src="../shared/pdf-library.js"></script>
   <script src="../shared/theme.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/i18n.js"></script>
@@ -123,8 +123,7 @@
         }
       });
 
-      // PDF.js worker (local, no CDN)
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "../shared/vendor/pdfjs/pdf.worker.min.js";
+      // The local ESM module and matching worker initialize when a PDF is opened.
 
       function isPdf(file) {
         var name = (file.name || "").toLowerCase();
@@ -149,7 +148,9 @@
 
         var token = ++renderToken;
         file.arrayBuffer().then(function (buf) {
-          return pdfjsLib.getDocument({ data: buf }).promise;
+          return window.loadPdfJs().then(function (lib) {
+            return lib.getDocument({ ...window.pdfjsDocumentOptions, data: buf, isEvalSupported: false }).promise;
+          });
         }).then(function (pdf) {
           if (token !== renderToken) return;
           pdfScroll.innerHTML = "";

@@ -33,7 +33,7 @@ lll-viewer/
 │       ├── marked.min.js
 │       ├── purify.min.js
 │       ├── papaparse.min.js
-│       └── pdfjs/      (pdf.min.js + worker)
+│       └── pdfjs/      (safe ESM + matching worker, local rendering data and file-URL bridges)
 ├── html/index.html     HTML Viewer
 ├── md/index.html       Markdown Viewer
 ├── pdf/index.html      PDF Viewer
