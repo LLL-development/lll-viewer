@@ -60,7 +60,8 @@
         <span data-i18n="newTab">New tab</span>
       </button>
     </div>
-    <iframe class="frame" id="frame" title="Rendered HTML"></iframe>
+    <!-- Keep document scripts functional without granting app-origin storage or DOM access. -->
+    <iframe class="frame" id="frame" title="Rendered HTML" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
   </div>
 
   <script src="../shared/theme.js"></script>
@@ -90,6 +91,7 @@
       var newTabBtn = document.getElementById("newTabBtn");
       var errorEl   = document.getElementById("error");
       var currentUrl = null;
+      var currentPreviewUrl = null;
 
       var __langHost = LLL_NAV.build(document.getElementById("navHost"), { base: "../", active: "html" });
       LLL_I18N.init(TOOL_STRINGS, {
@@ -112,6 +114,31 @@
         clearError();
         if (currentUrl) URL.revokeObjectURL(currentUrl);
         currentUrl = URL.createObjectURL(file);
+        if (currentPreviewUrl) { URL.revokeObjectURL(currentPreviewUrl); currentPreviewUrl = null; }
+        if (location.protocol === "file:") {
+          // Separate file documents cannot read the original opaque blob URL.
+          // Serialize a trusted wrapper; uploaded bytes remain an iframe attribute,
+          // never executable markup in the wrapper's own document.
+          newTabBtn.disabled = true;
+          var sourceUrl = currentUrl;
+          var reader = new FileReader();
+          reader.onload = function () {
+            if (currentUrl !== sourceUrl) return;
+            var preview = document.implementation.createHTMLDocument("HTML Preview");
+            var isolated = preview.createElement("iframe");
+            isolated.id = "frame";
+            isolated.setAttribute("sandbox", "allow-scripts");
+            isolated.setAttribute("referrerpolicy", "no-referrer");
+            isolated.setAttribute("title", "Rendered HTML");
+            isolated.style.cssText = "display:block;width:100%;height:100vh;border:0";
+            isolated.srcdoc = String(reader.result);
+            preview.body.style.margin = "0";
+            preview.body.appendChild(isolated);
+            currentPreviewUrl = URL.createObjectURL(new Blob(["<!doctype html>" + preview.documentElement.outerHTML], { type: "text/html" }));
+            newTabBtn.disabled = false;
+          };
+          reader.readAsText(file);
+        } else { newTabBtn.disabled = false; }
         frame.src = currentUrl;
         filename.textContent = file.name;
         uploader.classList.add("hidden");
@@ -122,6 +149,7 @@
         uploader.classList.remove("hidden");
         frame.src = "about:blank";
         if (currentUrl) { URL.revokeObjectURL(currentUrl); currentUrl = null; }
+        if (currentPreviewUrl) { URL.revokeObjectURL(currentPreviewUrl); currentPreviewUrl = null; }
         fileInput.value = "";
       }
       function pick() { fileInput.click(); }
@@ -143,7 +171,9 @@
         if (files && files.length) openFile(files[0]);
       });
       backBtn.addEventListener("click", closeViewer);
-      newTabBtn.addEventListener("click", function () { if (currentUrl) window.open(currentUrl, "_blank"); });
+      newTabBtn.addEventListener("click", function () {
+        if (currentUrl) window.open(currentPreviewUrl || "preview.html#" + encodeURIComponent(currentUrl), "_blank", "noopener");
+      });
     })();
   </script>
 </body>
